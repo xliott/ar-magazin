@@ -8,16 +8,31 @@
     src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js">
   </script>
 
-  <title>AR Kunstwerk</title>
-
   <style>
     body {
       margin: 0;
+      overflow: hidden;
+      background: white;
     }
 
     model-viewer {
       width: 100vw;
       height: 100vh;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      z-index: 10;
+    }
+
+    button {
+      font-size: 24px;
+      padding: 10px 20px;
     }
   </style>
 </head>
@@ -25,13 +40,38 @@
 <body>
 
 <model-viewer
+  id="viewer"
   src="model.glb"
   ar
-  ar-modes="scene-viewer quick-look webxr"
   camera-controls
-  auto-rotate
-  shadow-intensity="1">
+  auto-rotate>
 </model-viewer>
+
+<div class="controls">
+  <button onclick="prev()">⬅️</button>
+  <button onclick="next()">➡️</button>
+</div>
+
+<script>
+const models = ["model.glb", "model2.glb"];
+let index = 0;
+
+const viewer = document.getElementById("viewer");
+
+function update() {
+  viewer.src = models[index];
+}
+
+function next() {
+  index = (index + 1) % models.length;
+  update();
+}
+
+function prev() {
+  index = (index - 1 + models.length) % models.length;
+  update();
+}
+</script>
 
 </body>
 </html>
